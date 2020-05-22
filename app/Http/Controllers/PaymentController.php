@@ -29,8 +29,6 @@ class PaymentController extends Controller
      */
     public function create(PaymentRequest $request)
     {
-        return Payment::create(array_merge($request->validated(), [
-            'clp_usd' => cache('clp_usd')
-        ]));
+        return Payment::create($request->validated());
     }
 }

@@ -8,7 +8,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Payment extends Model
 {
-    protected $fillable = ['client_id', 'clp_usd'];
+    /**
+     * Fillable attributes.
+     *
+     * @var array
+     */
+    protected $fillable = ['client_id'];
+
+    /**
+     * Attribute casting.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'clp_usd' => 'double'
+    ];
 
     /**
      * Get author of a payment.

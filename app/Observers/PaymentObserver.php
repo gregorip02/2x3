@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Events\PaymentCreatedEvent;
+use App\External\DollarFetcher;
 use App\Payment;
 use Illuminate\Support\Str;
 
@@ -17,6 +18,7 @@ class PaymentObserver
     public function creating(Payment $payment)
     {
         $payment->uuid = Str::uuid();
+        $payment->clp_usd = (new DollarFetcher())->get();
         $payment->expires_at = now()->addMonths(5);
     }
 

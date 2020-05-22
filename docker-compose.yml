@@ -83,4 +83,3 @@ services:
       - app-cache:/data
     networks:
       - "cache-network"
-
