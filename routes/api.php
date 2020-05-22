@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,3 +15,6 @@ use Illuminate\Http\Request;
 */
 
 Route::get('clients', 'ClientController@index')->name('clients.index');
+
+Route::get('payments/{client}', 'PaymentController@index')->name('payments.index');
+Route::post('payments', 'PaymentController@create')->name('payments.create');

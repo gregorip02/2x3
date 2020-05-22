@@ -15,9 +15,9 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uuid')->unique();
-            $table->date('payment_date')->nullable();
-            $table->date('expires_at');
+            $table->uuid('uuid');
+            $table->timestamp('payment_date')->useCurrent();
+            $table->timestamp('expires_at')->useCurrent();
             $table->enum('status', ['paid', 'pending'])->default('pending');
             $table->double('clp_usd')->nullable();
 

@@ -4,16 +4,20 @@ version: "3.4"
 volumes:
   app-storage:
     driver: local
+  app-cache:
+    driver: local
 
 networks:
   www-network:
     driver: bridge
   storage-network:
     driver: bridge
+  cache-network:
+    driver: bridge
 
 services:
   fpm:
-    image: gregorip02/laravel-fpm:mysql # Or use the mongo tag for mongodb compatibility
+    build: .
     working_dir: /var/www/app
     container_name: fpm
     restart: on-failure
@@ -24,6 +28,7 @@ services:
     networks:
       - "www-network"
       - "storage-network"
+      - "cache-network"
 
   # If you want use MongoDB.
   # Remember to change the DB_HOST with the service name.
@@ -71,4 +76,11 @@ services:
       - "www-network"
     ports:
       - "8080:80"
+
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - app-cache:/data
+    networks:
+      - "cache-network"
 
