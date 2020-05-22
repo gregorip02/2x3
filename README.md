@@ -4,6 +4,8 @@
 git clone https://github.com/gregorip02/2x3.git
 cd 2x3
 composer install --ignore-platform-reqs -vvv
+cp .env.example .env
+php artisan key:generate
 ```
 
 # Desplegando el proyecto
