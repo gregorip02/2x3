@@ -1,0 +1,73 @@
+# Touch this file in your Laravel root path.
+version: "3.4"
+
+volumes:
+  app-storage:
+    driver: local
+
+networks:
+  www-network:
+    driver: bridge
+  storage-network:
+    driver: bridge
+
+services:
+  fpm:
+    image: gregorip02/laravel-fpm:mysql # Or use the mongo tag for mongodb compatibility
+    working_dir: /var/www/app
+    container_name: fpm
+    restart: on-failure
+    volumes:
+      - $PWD:/var/www/app
+    expose:
+      - "9000"
+    networks:
+      - "www-network"
+      - "storage-network"
+
+  # If you want use MongoDB.
+  # Remember to change the DB_HOST with the service name.
+  # mongo:
+  #  image: mongo:3.6-xenial
+  #  container_name: mongo
+  #  restart: on-failure
+  #  environment:
+  #    MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+  #    MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+  #    MONGO_INITDB_DATABASE: ${DB_DATABASE}
+  #  networks:
+  #    - "storage-network"
+  #  volumes:
+  #    - app-storage:/data/db
+
+  # If you want use MySQL.
+  # Remember to change the DB_HOST with the service name.
+  # mysql:
+  #   image: mysql:5.7
+  #   container_name: mysql
+  #   restart: on-failure
+  #   volumes:
+  #     - app-storage:/var/lib/mysql
+  #   networks:
+  #     - "storage-network"
+  #   environment:
+  #     MYSQL_USER: ${DB_USERNAME}
+  #     MYSQL_DATABASE: ${DB_DATABASE}
+  #     MYSQL_PASSWORD: ${DB_PASSWORD}
+  #     MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+
+  www:
+    image: nginx:1.17-alpine
+    working_dir: /var/www/app
+    container_name: nginx
+    restart: on-failure
+    volumes:
+      - $PWD/default.conf:/etc/nginx/conf.d/default.conf
+      # Mount public laravel path only
+      # in the nginx web server.
+      - $PWD/public:/var/www/app/public
+    networks:
+      - "www-network"
+    ports:
+      - "8080:80"
+
