@@ -42,19 +42,20 @@ services:
 
   # If you want use MySQL.
   # Remember to change the DB_HOST with the service name.
-  # mysql:
-  #   image: mysql:5.7
-  #   container_name: mysql
-  #   restart: on-failure
-  #   volumes:
-  #     - app-storage:/var/lib/mysql
-  #   networks:
-  #     - "storage-network"
-  #   environment:
-  #     MYSQL_USER: ${DB_USERNAME}
-  #     MYSQL_DATABASE: ${DB_DATABASE}
-  #     MYSQL_PASSWORD: ${DB_PASSWORD}
-  #     MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: on-failure
+    volumes:
+      - app-storage:/var/lib/mysql
+    networks:
+      - "storage-network"
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
 
   www:
     image: nginx:1.17-alpine
